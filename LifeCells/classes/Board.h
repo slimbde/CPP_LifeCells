@@ -6,7 +6,7 @@
 namespace LifeCells
 {
 
-	ref class Board
+	public ref class Board
 	{
 		int height;
 		int cellSize;

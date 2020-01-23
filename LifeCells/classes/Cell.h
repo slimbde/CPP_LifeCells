@@ -7,7 +7,7 @@ namespace LifeCells
 	using namespace System::Drawing;
 	using namespace System::Windows::Forms;
 
-	ref class Cell abstract : public Panel
+	public ref class Cell abstract : public Panel
 	{
 
 	public:
@@ -29,7 +29,7 @@ namespace LifeCells
 	}
 	inline bool Cell::operator==(Cell^ other)
 	{
-		if(this->GetType() != other->GetType())
+		if (this->GetType() != other->GetType())
 			return false;
 
 		return this->Left == other->Left && this->Top == other->Top;
