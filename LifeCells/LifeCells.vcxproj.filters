@@ -35,5 +35,17 @@
     <ClInclude Include="classes\Board.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="classes\MainFormBuilder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="TestForm.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\CellStrategy.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="classes\StartSizes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

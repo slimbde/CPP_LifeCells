@@ -1,5 +1,7 @@
 #pragma once
 #include "classes/Board.h"
+#include "classes/MainFormBuilder.h"
+
 
 namespace LifeCells
 {
@@ -12,38 +14,27 @@ namespace LifeCells
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// —водка дл€ Main
-	/// </summary>
+
+
 	public ref class Main : public System::Windows::Forms::Form
 	{
-	public:
-		Main(void)
-		{
-			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
-		}
 
-	protected:
-		/// <summary>
-		/// ќсвободить все используемые ресурсы.
-		/// </summary>
-		~Main()
+	protected: ~Main()
+	{
+		if (components)
 		{
-			if(components)
-			{
-				delete components;
-			}
+			delete components;
 		}
+	}
+	public:	Main(void)
+	{
+		InitializeComponent();
+	}
+
+
 	private: System::ComponentModel::IContainer^ components;
 	private: System::Windows::Forms::Timer^ timer1;
-
 	private:
-		/// <summary>
-		/// ќб€зательна€ переменна€ конструктора.
-		/// </summary>
 		Board^ board;
 		int height = 15;
 		int cellSize = 20;
@@ -54,11 +45,7 @@ namespace LifeCells
 		System::Windows::Forms::NumericUpDown^ heightTB;
 
 
-		#pragma region Windows Form Designer generated code
-				/// <summary>
-				/// “ребуемый метод дл€ поддержки конструктора Ч не измен€йте 
-				/// содержимое этого метода с помощью редактора кода.
-				/// </summary>
+#pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
@@ -84,9 +71,9 @@ namespace LifeCells
 			this->ResumeLayout(false);
 
 		}
-		#pragma endregion
+#pragma endregion
 
-	private: System::Void Main_Load(System::Object^ sender, System::EventArgs^ e)
+	private: void Main_Load(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->SuspendLayout();
 		this->Text = "Cells";
@@ -188,7 +175,7 @@ namespace LifeCells
 		cellsPanel = gcnew Panel();
 		cellsPanel->Dock = DockStyle::Fill;
 
-		for each(Cell ^ item in board->cells)
+		for each (Cell ^ item in board->cells)
 		{
 			cellsPanel->Controls->Add(item);
 			item->Click += gcnew EventHandler(this, &Main::cellClick);
@@ -213,7 +200,7 @@ namespace LifeCells
 		cellsPanel->Controls->Clear();
 
 		board->cells = board->getRandomBoard();
-		for each(Cell ^ item in board->cells)
+		for each (Cell ^ item in board->cells)
 		{
 			cellsPanel->Controls->Add(item);
 			item->Click += gcnew EventHandler(this, &Main::cellClick);
@@ -224,7 +211,7 @@ namespace LifeCells
 		board->cells = board->getDeadBoard();
 		cellsPanel->Controls->Clear();
 
-		for each(Cell ^ cell in board->cells)
+		for each (Cell ^ cell in board->cells)
 		{
 			cell->Click += gcnew EventHandler(this, &Main::cellClick);
 			cellsPanel->Controls->Add(cell);
@@ -236,7 +223,7 @@ namespace LifeCells
 	}
 	private: void runClick(Object^ sender, EventArgs^ e)
 	{
-		if(timer1->Enabled)
+		if (timer1->Enabled)
 		{
 			timer1->Enabled = false;
 			runButton->Text = "RUN";
@@ -246,11 +233,11 @@ namespace LifeCells
 		timer1->Enabled = true;
 		runButton->Text = "STOP";
 	}
-	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e)
+	private: void timer1_Tick(System::Object^ sender, System::EventArgs^ e)
 	{
 		runButton->Text = "STOP";
 
-		if(board->refineBoard())
+		if (board->refineBoard())
 		{
 			auto handleBoard = gcnew Action<int>(this, &Main::handleBoardDelegate);
 			handleBoard->BeginInvoke(5, nullptr, nullptr);
@@ -260,8 +247,8 @@ namespace LifeCells
 		timer1->Enabled = false;
 		runButton->Text = "RUN";
 
-		for each(Cell ^ cell in cellsPanel->Controls)
-			if(cell->GetType() == AliveCell::typeid)
+		for each (Cell ^ cell in cellsPanel->Controls)
+			if (cell->GetType() == AliveCell::typeid)
 			{
 				MessageBox::Show("The cells are in their harmony");
 				return;
@@ -273,19 +260,19 @@ namespace LifeCells
 	{
 		// get cells to clear
 		auto handlingCells = gcnew Generic::List<Cell^>();
-		for each(Cell ^ item in cellsPanel->Controls)
-			if(item->GetType() == AliveCell::typeid)
+		for each (Cell ^ item in cellsPanel->Controls)
+			if (item->GetType() == AliveCell::typeid)
 				handlingCells->Add(gcnew DeadCell(item));
 
-		for each(Cell ^ item in board->cells)
-			if(item->GetType() == AliveCell::typeid)
+		for each (Cell ^ item in board->cells)
+			if (item->GetType() == AliveCell::typeid)
 				handlingCells->Add(gcnew AliveCell(item));
 
 
 		// substitute cells
-		for(int i = 0; i < handlingCells->Count; ++i)
-			for each(Cell ^ item in cellsPanel->Controls)
-				if(handlingCells[i]->Position->Equals(item->Position))
+		for (int i = 0; i < handlingCells->Count; ++i)
+			for each (Cell ^ item in cellsPanel->Controls)
+				if (handlingCells[i]->Position->Equals(item->Position))
 				{
 					handlingCells[i]->Click += gcnew EventHandler(this, &Main::cellClick);
 
@@ -295,7 +282,7 @@ namespace LifeCells
 					auto add = gcnew Action<Cell^>(this, &Main::addInvoke);
 					Invoke(add, handlingCells[i]);
 
-					if(i == handlingCells->Count - 1)
+					if (i == handlingCells->Count - 1)
 						return;
 
 					break;
@@ -311,8 +298,8 @@ namespace LifeCells
 	}
 	private: void resizeClick(Object^ sender, EventArgs^ e)
 	{
-		if(cellSize == Convert::ToInt32(cellSizeTB->Text) &&
-		   height == Convert::ToInt32(heightTB->Text))
+		if (cellSize == Convert::ToInt32(cellSizeTB->Text) &&
+			height == Convert::ToInt32(heightTB->Text))
 			return;
 
 		cellSize = Convert::ToInt32(cellSizeTB->Text);

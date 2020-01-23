@@ -147,8 +147,14 @@
     <ClInclude Include="classes\AliveCell.h" />
     <ClInclude Include="classes\Board.h" />
     <ClInclude Include="classes\Cell.h" />
+    <ClInclude Include="classes\CellStrategy.h" />
     <ClInclude Include="classes\DeadCell.h" />
+    <ClInclude Include="classes\MainFormBuilder.h" />
+    <ClInclude Include="classes\StartSizes.h" />
     <ClInclude Include="Main.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="TestForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>

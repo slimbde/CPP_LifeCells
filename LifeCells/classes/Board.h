@@ -51,28 +51,28 @@ namespace LifeCells
 		};
 
 		int counter = 0;    // counts alive cells
-		for each(auto item in pointsToCheck)
-			if(validCell(item))
-				if(cells[item->Y, item->X]->GetType() == AliveCell::typeid) // if the cell is alive
+		for each (auto item in pointsToCheck)
+			if (validCell(item))
+				if (cells[item->Y, item->X]->GetType() == AliveCell::typeid) // if the cell is alive
 					++counter;
 
-		if(counter < 2 || counter > 3)
+		if (counter < 2 || counter > 3)
 			refinedCells[checkPoint->Y, checkPoint->X] = gcnew DeadCell(cell->Left,
 																		cell->Top,
 																		cell->Side);
-		else if(counter == 3)
+		else if (counter == 3)
 			refinedCells[checkPoint->Y, checkPoint->X] = gcnew AliveCell(cell->Left,
 																		 cell->Top,
 																		 cell->Side);
-		else if(cell->GetType() == AliveCell::typeid)
+		else if (cell->GetType() == AliveCell::typeid)
 			refinedCells[checkPoint->Y, checkPoint->X] = gcnew AliveCell(cell->Left,
 																		 cell->Top,
 																		 cell->Side);
 	}
 	inline bool Board::validCell(Point^ pt)
 	{
-		if(pt->X < 0 || pt->X >= this->height * 2
-		   || pt->Y < 0 || pt->Y >= this->height)
+		if (pt->X < 0 || pt->X >= this->height * 2
+			|| pt->Y < 0 || pt->Y >= this->height)
 			return false;
 
 		return true;
@@ -87,9 +87,9 @@ namespace LifeCells
 		this->Top = cellSize / 4;
 
 		cells = gcnew array<Cell^, 2>(height, height * 2);
-		for(int i = 0; i < height; ++i)
+		for (int i = 0; i < height; ++i)
 		{
-			for(int j = 0; j < height * 2; ++j)
+			for (int j = 0; j < height * 2; ++j)
 			{
 				auto left = j * (cellSize + margin) + Left;
 				auto top = i * (cellSize + margin) + Top;
@@ -111,11 +111,11 @@ namespace LifeCells
 	}
 	inline Cell^ Board::swap(Cell^ cell)
 	{
-		if(cell->GetType() == (AliveCell::typeid))
+		if (cell->GetType() == (AliveCell::typeid))
 		{
 			auto newCell = gcnew DeadCell(cell->Left, cell->Top, cell->Side);
-			for each(Cell ^ %item in cells)
-				if(item == cell)
+			for each (Cell ^ %item in cells)
+				if (item == cell)
 				{
 					item = newCell;
 					break;
@@ -125,8 +125,8 @@ namespace LifeCells
 		}
 
 		auto newCell = gcnew AliveCell(cell->Left, cell->Top, cell->Side);
-		for each(Cell ^ %item in cells)
-			if(item == cell)
+		for each (Cell ^ %item in cells)
+			if (item == cell)
 			{
 				item = newCell;
 				break;
@@ -139,14 +139,14 @@ namespace LifeCells
 		auto newCells = gcnew array<Cell^, 2>(height, height * 2);
 
 		auto rnd = gcnew Random();
-		for(int i = 0; i < height; ++i)
+		for (int i = 0; i < height; ++i)
 		{
-			for(int j = 0; j < height * 2; ++j)
+			for (int j = 0; j < height * 2; ++j)
 			{
 				auto left = j * (cellSize + margin) + Left;
 				auto top = i * (cellSize + margin) + Top;
 
-				if(rnd->Next(3) == 1)
+				if (rnd->Next(3) == 1)
 					newCells[i, j] = gcnew AliveCell(left, top, cellSize);
 				else
 					newCells[i, j] = gcnew DeadCell(left, top, cellSize);
@@ -159,9 +159,9 @@ namespace LifeCells
 	{
 		auto newCells = gcnew array<Cell^, 2>(height, height * 2);
 
-		for(int i = 0; i < height; ++i)
+		for (int i = 0; i < height; ++i)
 		{
-			for(int j = 0; j < height * 2; ++j)
+			for (int j = 0; j < height * 2; ++j)
 			{
 				auto left = j * (cellSize + margin) + Left;
 				auto top = i * (cellSize + margin) + Top;
@@ -177,14 +177,14 @@ namespace LifeCells
 		refinedCells = getDeadBoard();
 		Array::Copy(cells, refinedCells, cells->Length);
 
-		for each(Cell ^ %item in refinedCells)
+		for each (Cell ^ %item in refinedCells)
 			updateCell(item);
 
-		for(int i = 0; i < height; ++i)
+		for (int i = 0; i < height; ++i)
 		{
-			for(int j = 0; j < height * 2; ++j)
+			for (int j = 0; j < height * 2; ++j)
 			{
-				if(cells[i, j] != refinedCells[i, j])
+				if (cells[i, j] != refinedCells[i, j])
 				{
 					Array::Copy(refinedCells, cells, cells->Length);
 					return true;
